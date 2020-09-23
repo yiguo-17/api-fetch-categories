@@ -153,25 +153,52 @@
 // Category: Anti-Malware
 // ....and so on for each of the 45 categories
 
+
 const fetch = require('node-fetch');
+//1
+fetch ('https://api.publicapis.org/entries').then(res=>res.json()).then(
+    data =>data.entries
+).then(array=>{
+    const category =[];
+     for(const item of array){
+         if(! category.includes(item.Category)){
+             category.push(item.Category)
+         }
+     }
+    return {data:array,cate:category}
+}).then(obj=>{
+    const randomCate = obj.cate[Math.floor(Math.random()*obj.cate.length)];
+    console.log(`You random category is ${randomCate.toUpperCase()}: \n`)
+    const entries = obj.data.filter(item=>item.Category===randomCate);
+    entries.map(entry=>{
+        const{API,Description,Link,Category}= entry;
+        console.log(`\n API: ${API} \n Description: ${Description}\n Link: ${Link}\n Category: ${Category} \n ---`)
+    })
+    
+})
+
+
+
+//2
 fetch('https://api.publicapis.org/entries').then(res=>res.json()).then(
     data =>data.entries
 ).then(array=>{
-    const animal = array.filter(item=>item.Category ==='Animals');
-    const anime = array.filter(item=>item.Category ==='Anime');
-    const antiMalware = array.filter(item=>item.Category==='Anti-Malware');
-return[animal,anime,antiMalware]
-}).then(array=>{
-    const[animal,anime,anti] = array;
-    const[animal1,animal2,animal3,...animals]=animal;
-    const[anime1,anime2,anime3,...nimes]=anime;
-    const[anti1,anti2,anti3,...antis] = anti;
-    const examples = [animal1,animal2,animal3,anime1,anime2,anime3,anti1,anti2,anti3];
-    examples.map(item=>{
-        const {API,Description,Link,Category} = item;
-        console.log('Api: '+API +'\n'+
-        'Description: ' + Description+'\n'+
-        'Link: ' + Link+'\n'+
-        'Category: '+ Category+'\n')
-    })
+    const category =[];
+     for(const item of array){
+         if(! category.includes(item.Category)){
+             category.push(item.Category)
+         }
+     }
+     const examples = [];
+     for(const item of category){
+         example = array.filter(api=>api.Category===item).slice(0,3);
+         examples.push(example);
+     }
+     for(const element of examples){
+         console.log(element[0].Category.toUpperCase()+ '\n'+'---')
+         element.map(api=>{
+             const {API,Description,Link,Category} = api;
+             console.log(` API: ${API} \n Description: ${Description}\n Link: ${Link}\n Category: ${Category}\n `)
+         })
+     } 
 })
