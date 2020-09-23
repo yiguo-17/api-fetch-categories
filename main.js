@@ -152,3 +152,26 @@
 // Link: https://http.cat/
 // Category: Anti-Malware
 // ....and so on for each of the 45 categories
+
+const fetch = require('node-fetch');
+fetch('https://api.publicapis.org/entries').then(res=>res.json()).then(
+    data =>data.entries
+).then(array=>{
+    const animal = array.filter(item=>item.Category ==='Animals');
+    const anime = array.filter(item=>item.Category ==='Anime');
+    const antiMalware = array.filter(item=>item.Category==='Anti-Malware');
+return[animal,anime,antiMalware]
+}).then(array=>{
+    const[animal,anime,anti] = array;
+    const[animal1,animal2,animal3,...animals]=animal;
+    const[anime1,anime2,anime3,...nimes]=anime;
+    const[anti1,anti2,anti3,...antis] = anti;
+    const examples = [animal1,animal2,animal3,anime1,anime2,anime3,anti1,anti2,anti3];
+    examples.map(item=>{
+        const {API,Description,Link,Category} = item;
+        console.log('Api: '+API +'\n'+
+        'Description: ' + Description+'\n'+
+        'Link: ' + Link+'\n'+
+        'Category: '+ Category+'\n')
+    })
+})
